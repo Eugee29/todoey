@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:todoey/screens/add_task_screen.dart';
+import 'package:todoey/models/task.dart';
+import 'package:todoey/widgets/add_task_modal.dart';
 import 'package:todoey/widgets/tasks_list.dart';
 
 class TasksScreen extends StatefulWidget {
@@ -12,6 +13,16 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
+  late List<Task> tasks = [
+    Task('Do 1'),
+    Task('Do 2'),
+    Task('Do 3'),
+  ];
+
+  void toggleTask(Task task) => {setState(() => task.isDone = !task.isDone)};
+
+  void addTask(Task task) => {setState(() => tasks.add(task))};
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +35,7 @@ class _TasksScreenState extends State<TasksScreen> {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTaskScreen(),
+                child: AddTaskModal(addTask),
               ),
             ),
           );
@@ -64,7 +75,7 @@ class _TasksScreenState extends State<TasksScreen> {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '12 Tasks',
+                  '${tasks.length} ${tasks.length == 1 ? 'Task' : 'Tasks'}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -83,7 +94,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: TasksList(),
+              child: TasksList(tasks, toggleTask: toggleTask),
             ),
           )
         ],

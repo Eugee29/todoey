@@ -1,9 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:todoey/models/task.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({super.key});
+class AddTaskModal extends StatelessWidget {
+  final Function addTask;
+
+  AddTaskModal(this.addTask, {super.key});
+
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,7 @@ class AddTaskScreen extends StatelessWidget {
                 ),
               ),
               TextField(
+                controller: textController,
                 textAlign: TextAlign.center,
                 autofocus: true,
               ),
@@ -40,7 +46,10 @@ class AddTaskScreen extends StatelessWidget {
               Container(
                 color: Colors.lightBlueAccent,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    addTask(Task(textController.text));
+                    Navigator.pop(context);
+                  },
                   child: Text(
                     'Add',
                     style: TextStyle(
