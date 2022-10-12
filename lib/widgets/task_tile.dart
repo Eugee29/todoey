@@ -3,13 +3,16 @@ import 'package:todoey/models/task.dart';
 
 class TaskTile extends StatelessWidget {
   final Task task;
-  final Function toggleTask;
+  final void Function()? onLongPress;
+  final void Function(bool?) onChanged;
 
-  const TaskTile(this.task, {super.key, required this.toggleTask});
+  const TaskTile(this.task,
+      {super.key, required this.onChanged, this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onLongPress: onLongPress,
       title: Text(
         task.text,
         style: task.isDone
@@ -19,7 +22,7 @@ class TaskTile extends StatelessWidget {
       trailing: Checkbox(
         value: task.isDone,
         activeColor: Colors.lightBlueAccent,
-        onChanged: (_) => toggleTask(task),
+        onChanged: onChanged,
       ),
     );
   }
